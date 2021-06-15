@@ -68,3 +68,57 @@ class PAData(models.Model):
     class Meta:
         
         ordering = ['price_rate', 'zipcode', 'state', 'plan_type', 'term_length', 'monthly_fee', 'product_last_update']
+
+
+
+class Shop(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(verbose_name='Shop Name', max_length=255, blank=True, null=True)
+    url = models.CharField(verbose_name='Shop Url', max_length=1000, blank=True, null=True)
+    product_no = models.PositiveIntegerField(verbose_name='Number of products', default=0)
+    sale_no = models.PositiveIntegerField(verbose_name='Number of sales', default=0)
+    review_no = models.PositiveIntegerField(verbose_name='Number of review', default=0)
+    author = models.PositiveIntegerField(verbose_name='Number of review', default=0)
+    update_at = models.DateField(verbose_name='Update at', blank=True, null=True)
+    table_name = models.CharField(max_length=65, blank=True, null=True, default='app_shop')
+
+class Product(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    code = models.CharField(verbose_name='Product Code', max_length=125, blank=True, null=True)
+    name = models.CharField(verbose_name='Product Name', max_length=500, blank=True, null=True)
+    first_review_date = models.DateField(verbose_name='First Review Date', blank=True, null=True)
+    url = models.CharField(verbose_name='Shop Url', max_length=1000, blank=True, null=True)
+    update_at = models.DateField(verbose_name='Update at', blank=True, null=True)
+    table_name = models.CharField(max_length=65, blank=True, null=True, default='app_product')
+    shop = models.ForeignKey( 
+        Shop, related_name='product_shop', db_constraint=False, blank = True, null=True, on_delete=models.DO_NOTHING)
+    def __str__(self):
+        return self.name
+
+
+class Review(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    author = models.CharField(verbose_name='Review Author', max_length=125, blank=True, null=True)
+    stars = models.FloatField(verbose_name='Starts', default=0)
+    review_date = models.DateField(verbose_name='Review date', blank=True, null=True)
+    variants = models.CharField(verbose_name='Variant', max_length=225, blank=True, null=True)
+    content = models.CharField(verbose_name='Content', max_length=1000, blank=True, null=True)
+    update_at = models.DateField(verbose_name='Update at', blank=True, null=True)
+    table_name = models.CharField(max_length=65, blank=True, null=True, default='app_review')
+
+    product = models.ForeignKey( 
+        Product, related_name='review_product', db_constraint=False, blank = True, null=True, on_delete=models.DO_NOTHING)
+    def __str__(self):
+        return self.content
+
+class Keyword(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(verbose_name='Keyword', max_length=125)
+    rank = models.CharField(verbose_name='Rank', max_length=125)
+    update_at = models.DateField(verbose_name='Update at', blank=True, null=True)
+    table_name = models.CharField(max_length=65, blank=True, null=True, default='app_keyword')
+
+    product = models.ForeignKey( 
+        Product, related_name='keyword_product', db_constraint=False, blank = True, null=True, on_delete=models.DO_NOTHING)
+    def __str__(self):
+        return self.name + self.rank

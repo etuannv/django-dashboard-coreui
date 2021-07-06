@@ -145,6 +145,16 @@ class KeywordTable(tables.Table):
         args=[A('product_id')],
         )
 
+    # product = tables.Column(
+    #     accessor='product.name', 
+    #     verbose_name='Reviews', 
+    #     attrs={
+    #         'td': {
+    #             'style': 'text-align:left;'
+    #         }
+    #     }
+    # )
+
     class Meta:
         attrs = {
             'class':'table table-responsive-sm table-bordered table-striped table-sm'

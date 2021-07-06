@@ -150,7 +150,17 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         return Product.objects.get(id=self.kwargs.get("id"))
 
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['review_no'] = Review.objects.filter(product__id__exact=self.object.id).count()
 
+        first_review_date = ''
+        first_review = Review.objects.filter(product__id__iexact=self.object.id).order_by('review_date')
+        if first_review:
+            if first_review[0].review_date:
+                first_review_date = first_review[0].review_date.strftime("%m/%d/%Y")
+        context['first_review_date'] = first_review_date
+        return context
 
 
 

@@ -50,7 +50,7 @@ class ProductTable(tables.Table):
     )
 
     first_review = tables.Column(
-        accessor='id', 
+        accessor='get_first_review_date', 
         verbose_name='First Review Date', 
         attrs={
             'td': {
@@ -58,30 +58,12 @@ class ProductTable(tables.Table):
             }
         }
     )
-    def render_first_review(self, value, record):
-        first_review = Review.objects.filter(product__id__iexact=value).order_by('review_date')
-        if first_review:
-            if first_review[0].review_date:
-                return first_review[0].review_date.strftime("%m/%d/%Y")
-        return ''
 
-
-    
-    reviews = tables.Column(
-        accessor='id', 
-        verbose_name='Reviews', 
-        attrs={
-            'td': {
-                'style': 'text-align:center;'
-            }
-        }
+    reviews = tables.TemplateColumn(
+        '<a href="/review/list?content=&product__id={{record.id}}">{{record.get_review_no}}</a>'
     )
     
-    def render_reviews(self, value, record):
-        review_count = Review.objects.filter(product__id__iexact=value).count()
-        # return f'<a href="/review/list?content=&product__id={value}">{review_count}</a>',
-        return review_count
-    
+
     price = tables.Column(
         accessor="price",
         verbose_name='Price', 
@@ -139,6 +121,7 @@ class KeywordTable(tables.Table):
         args=[A('pk')],
         footer=lambda table: 'Total: {} records'.format(len(table.data))
         )
+    
     product  = tables.LinkColumn(
         'product_detail', 
         text=lambda record: record.product.name, 

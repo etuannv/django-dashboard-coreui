@@ -102,6 +102,16 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_review_no(self):
+        return Review.objects.filter(product__id__iexact=self.id).count()
+    
+    def get_first_review_date(self):
+        first_review = Review.objects.filter(product__id__iexact=self.id).order_by('review_date')
+        if first_review:
+            if first_review[0].review_date:
+                return first_review[0].review_date.strftime("%m/%d/%Y")
+        return ''
+
 
 class Review(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

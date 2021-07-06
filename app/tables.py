@@ -2,7 +2,17 @@ import django_tables2 as tables
 from .models import *
 from django_tables2.utils import A
 
-
+class NumberColumn(tables.Column):
+    attrs={
+        'td': {
+            'style': 'text-align:right;'
+        }
+    }
+    def render(self, value):
+        if isinstance(value, int):
+            return '{:,}'.format(value)
+        else:
+            return '{:0.4f}'.format(value)
 
 class ShopTable(tables.Table):   
     name  = tables.LinkColumn(
@@ -11,7 +21,9 @@ class ShopTable(tables.Table):
         args=[A('pk')],
         footer=lambda table: 'Total: {} records'.format(len(table.data))
         )
-
+    sale_no = NumberColumn()
+    review_no = NumberColumn()
+    stars = NumberColumn()
     
     class Meta:
         attrs = {
@@ -20,7 +32,7 @@ class ShopTable(tables.Table):
         model = Shop
         fields = (
             'name',
-            'product_no', 
+            # 'product_no', 
             'sale_no',
             'review_no', 
             'stars', 
@@ -30,9 +42,9 @@ class ShopTable(tables.Table):
 
 
 class ProductTable(tables.Table):   
-    code  = tables.LinkColumn(
+    name  = tables.LinkColumn(
         'product_detail', 
-        text=lambda record: record.code, 
+        text=lambda record: record.name, 
         args=[A('pk')],
         footer=lambda table: 'Total: {} records'.format(len(table.data))
         )
@@ -60,7 +72,12 @@ class ProductTable(tables.Table):
     )
 
     reviews = tables.TemplateColumn(
-        '<a href="/review/list?content=&product__id={{record.id}}">{{record.get_review_no}}</a>'
+        '<a href="/review/list?content=&product__id={{record.id}}">{{record.get_review_no}}</a>',
+        attrs={
+            'td': {
+                'style': 'text-align:right;'
+            }
+        }
     )
     
 
@@ -80,7 +97,6 @@ class ProductTable(tables.Table):
         }
         model = Product
         fields = (
-            'code',
             'name', 
             'price',
             'first_review',
@@ -98,7 +114,15 @@ class ReviewTable(tables.Table):
         footer=lambda table: 'Total: {} records'.format(len(table.data))
         )
 
-    
+    stars = tables.Column(
+        accessor='stars', 
+        verbose_name='Review Rate', 
+        attrs={
+            'td': {
+                'style': 'text-align:right;'
+            }
+        }
+    )
 
     class Meta:
         attrs = {

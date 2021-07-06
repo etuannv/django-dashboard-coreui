@@ -146,4 +146,4 @@ class Keyword(models.Model):
         return self.name + self.rank
     
     class Meta:
-        ordering = ['rank']
+        ordering = ['-update_at', 'rank']

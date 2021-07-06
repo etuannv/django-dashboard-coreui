@@ -1,6 +1,50 @@
 from .models import *
 import django_filters
 
+
+
+class MapDataFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model = MapData
+        fields = {
+            # 'title': ['icontains'],
+            # 'publish_place': ['icontains'],
+            # 'publish_date' : ['icontains'],
+        }
+    
+    
+    title = django_filters.CharFilter(
+        label='Title', 
+        lookup_expr='icontains'
+    )
+
+    publish_place = django_filters.CharFilter(
+        label='Publish Place', 
+        lookup_expr='icontains'
+    )
+
+    publish_date = django_filters.CharFilter(
+        label='Publish Date', 
+        lookup_expr='icontains'
+    )
+    
+    author = django_filters.CharFilter(
+        label='Author', 
+        lookup_expr='icontains'
+    )
+
+
+
+
+
+
+
+
+
+
+
+
 class PADataFilter(django_filters.FilterSet):
 
     class Meta:

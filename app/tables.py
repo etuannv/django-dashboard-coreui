@@ -2,6 +2,55 @@ import django_tables2 as tables
 from .models import *
 from django_tables2.utils import A
 
+
+class MapDataTable(tables.Table):
+    # url = tables.TemplateColumn(
+    #     '<a target="_brank" href={{record.url}}>View</a>'
+    # )
+    url = tables.TemplateColumn('<a target="_blank" href="{{record.url}}">View</a>')
+    
+    def render_price(self, value, record):
+        currency = record.price_currency
+        if 'USD' in currency:
+            currency = "$"
+        return '{}{}'.format(currency, value)
+    class Meta:
+        attrs = {
+            'class':'table table-responsive-sm table-bordered table-striped table-sm'
+        }
+        model = PAData
+
+        fields = (
+            # 'category_path',
+            'category',
+            'title',
+            'publish_place',
+            'publish_date',
+            # 'dimensions',
+            # 'color',
+            # 'condition',
+            # 'short_desc',
+            # 'long_desc',
+            'price',
+            # 'price_currency',
+            # 'img_url',
+            'author',
+            # 'author_url',
+            # 'attributes',
+            'url',
+        )
+
+
+
+
+
+
+
+
+
+
+
+
 class PersonColumn(tables.Column):
 
     def render(self, record):

@@ -14,6 +14,17 @@ urlpatterns = [
     # The home page
     # path('', views.index, name='home'),
     path('', views.DashboardView.as_view(), name='home'),
+
+    path('mapdata/list', views.MapDataListView.as_view(), name='mapdata_list'),
+    path('mapdata/detail/<uuid:id>', views.MapDataDetailView.as_view(), name='mapdata_detail'),
+
+
+
+
+
+
+
+
     path('pa/list', views.PADataListView.as_view(), name='pa_list'),
     path('pa/detail/<pk>', views.PADataDetailView.as_view(), name='pa_detail'),
     

@@ -1,0 +1,74 @@
+{% extends "layouts/base-site.html" %}
+{% load render_table from django_tables2 %}
+{% load export_url from django_tables2 %}
+{% load widget_tweaks %}
+
+{% block title %} Map Data List {% endblock %} 
+{% block breadcrumb %} 
+<li class="breadcrumb-item">MapData List</li>
+{% endblock %} 
+
+{% block content %}
+  
+<div class="container-fluid">
+  <div class="fade-in">
+    <div class="card">
+      <form class="form-horizontal" action="{% url 'mapdata_list'%}" method="get">
+      <div class="card-body">  
+          <div class="form-group row">
+            
+            <div class="col-3">
+              {{ filter.form.title.label_tag }}
+              {% render_field filter.form.title class="form-control" %}
+            </div>
+
+            <div class="col-3">
+              {{ filter.form.publish_place.label_tag }}
+              {% render_field filter.form.publish_place class="form-control" %}
+            </div>
+
+            <div class="col-3">
+              {{ filter.form.publish_date.label_tag }}
+              {% render_field filter.form.publish_date class="form-control" %}
+            </div>
+
+            <div class="col-3">
+              {{ filter.form.author.label_tag }}
+              {% render_field filter.form.author class="form-control" %}
+            </div>
+
+            
+          </div>
+
+      </div>
+      <div class="card-footer" style="text-align: center;">
+        <button class="btn btn-sm btn-primary" type="submit"> Search</button>
+        <a href="{% url 'mapdata_list'%}" class="btn btn-sm btn-primary" role="button">Reset</a>
+        <a href="{% export_url 'csv' %}" class="btn btn-sm btn-primary" role="button">Export the data</a>  
+      </div>
+    </form>
+    </div>    
+  </div>
+</div>
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <style>
+      .table-container {
+          width: 99.9%;
+      }
+    </style>
+    {% render_table data_table %}
+  </div>
+  <div class="row" style="padding-top:40px;">
+    <p class="text-center">
+        
+          
+    </p>
+  </div>
+</div>
+
+
+{% endblock content %}

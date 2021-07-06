@@ -52,50 +52,69 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         
         ## pa data
         context['pa_total_records'] = PAData.objects.all().filter(created_by='pa_spd').count()
-        context['pa_company_no'] = PAData.objects.exclude(company_name__isnull=True).filter(created_by='pa_spd').values('company_name').order_by('company_name').distinct().count()
-        context['pa_state_no'] = PAData.objects.exclude(state__isnull=True).filter(created_by='pa_spd').values('state').order_by('state').distinct().count()
-        latest_item = PAData.objects.filter(created_by='pa_spd')
-        if latest_item:
-            latest_item = latest_item.latest('created_at')
-            context['pa_last_scraped'] = latest_item.created_at
-        else:
-            context['pa_last_scraped'] = None
-
-        ## Ohio
-        context['ohio_total_records'] = PAData.objects.all().filter(created_by='ohio_spd').count()
-        context['ohio_company_no'] = PAData.objects.exclude(company_name__isnull=True).filter(created_by='ohio_spd').values('company_name').order_by('company_name').distinct().count()
-        context['ohio_state_no'] = PAData.objects.exclude(state__isnull=True).filter(created_by='ohio_spd').values('state').order_by('state').distinct().count()
-        latest_item = PAData.objects.filter(created_by='ohio_spd')
-        if latest_item:
-            latest_item = latest_item.latest('created_at')
-            context['ohio_last_scraped'] = latest_item.created_at
-        else:
-            context['ohio_last_scraped'] = None
-
-        ## Ohio Gas
-        context['ohio_gas_total_records'] = PAData.objects.all().filter(created_by='ohio_gas_spd').count()
-        context['ohio_gas_company_no'] = PAData.objects.exclude(company_name__isnull=True).filter(created_by='ohio_gas_spd').values('company_name').order_by('company_name').distinct().count()
-        context['ohio_gas_state_no'] = PAData.objects.exclude(state__isnull=True).filter(created_by='ohio_gas_spd').values('state').order_by('state').distinct().count()
-        latest_item = PAData.objects.filter(created_by='ohio_gas_spd')
-        if latest_item:
-            latest_item = latest_item.latest('created_at')
-            context['ohio_gas_last_scraped'] = latest_item.created_at
-        else:
-            context['ohio_gas_last_scraped'] = None
         
 
-        ## Power To Choose
-        context['p2choose_total_records'] = PAData.objects.all().filter(created_by='p2choose_spd').count()
-        context['p2choose_company_no'] = PAData.objects.exclude(company_name__isnull=True).filter(created_by='p2choose_spd').values('company_name').order_by('company_name').distinct().count()
-        context['p2choose_state_no'] = PAData.objects.exclude(state__isnull=True).filter(created_by='p2choose_spd').values('state').order_by('state').distinct().count()
-        latest_item = PAData.objects.filter(created_by='p2choose_spd')
-        if latest_item:
-            latest_item = latest_item.latest('created_at')
-            context['p2choose_last_scraped'] = latest_item.created_at
-        else:
-            context['p2choose_last_scraped'] = None
-
         return context
+
+
+
+class MapDataListView(LoginRequiredMixin, ExportMixin, tables.SingleTableView):
+    model = MapData
+    
+    table_class = MapDataTable
+    context_object_name = 'data_table'
+    template_name = "app/mapdata_list.html"
+    my_export_data = None
+    export_name='Papowerswitch_' + time.strftime('%Y%m%d_%H_%M_%S')
+    
+
+    def get_context_data(self, **kwargs):
+        list = MapData.objects.all()
+        filter = MapDataFilter(self.request.GET, queryset=list)
+        data_table = MapDataTable(filter.qs)
+        
+        RequestConfig(self.request).configure(data_table)
+        per_page = self.request.GET.get('per_page', 50)
+        data_table.paginate(page=self.request.GET.get('page', 1), per_page=per_page)
+        self.my_export_data = data_table
+        context = super(MapDataListView, self).get_context_data(**kwargs)
+        context['data_table'] = data_table
+        context['filter'] = filter
+        
+        return context
+    
+    def create_export(self, export_format):
+        
+        exporter = self.export_class(
+            export_format=export_format,
+            table=self.my_export_data,
+            # exclude_columns=self.exclude_columns,
+            # dataset_kwargs=self.get_dataset_kwargs(),
+        )
+
+        return exporter.response(filename=self.get_export_filename(export_format))
+
+class MapDataDetailView(LoginRequiredMixin, DetailView):
+    model = MapData
+    template_name = "app/mapdata_detail.html"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class PADataListView(LoginRequiredMixin, ExportMixin, tables.SingleTableView):
     model = PAData

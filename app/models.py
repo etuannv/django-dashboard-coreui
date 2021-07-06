@@ -10,6 +10,46 @@ import uuid
 # Create your models here.
 
 
+class MapData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    category_path = models.CharField(verbose_name='Category Path', max_length=225, blank=True, null=True)
+    category = models.CharField(verbose_name='Category', max_length=125, blank=True, null=True)
+    title = models.CharField(verbose_name='Title', max_length=1000, blank=True, null=True)
+    publish_place = models.CharField(verbose_name='Publish Place', max_length=125, blank=True, null=True)
+    publish_date = models.CharField(verbose_name='Publish Date', max_length=65, blank=True, null=True)
+
+    dimensions = models.CharField(verbose_name='Dimentions', max_length=225, blank=True, null=True)
+    color = models.CharField(verbose_name='Color', max_length=125, blank=True, null=True)
+    condition = models.CharField(verbose_name='Condition', max_length=625, blank=True, null=True)
+    short_desc = models.TextField(verbose_name='Short Description', blank=True, null=True)
+    long_desc = models.TextField(verbose_name='Description', blank=True, null=True)
+    price = models.FloatField(verbose_name='Price', default=None, null=True)
+    price_currency = models.CharField(verbose_name='Color', max_length=3, blank=True, null=True)
+    img_url = models.CharField(verbose_name='Image', max_length=1000, blank=True, null=True)
+    author = models.CharField(verbose_name='Author', max_length=225, blank=True, null=True)
+    author_url = models.CharField(verbose_name='Author URL', max_length=1000, blank=True, null=True)
+    attributes = models.CharField(verbose_name='Attribute', max_length=1000, blank=True, null=True)
+    url = models.CharField(verbose_name='Origin URL', max_length=1000, blank=True, null=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class PAData(models.Model):
     zipcode = models.CharField(verbose_name='Zipcode', max_length=25, blank=True, null=True)
     state = models.CharField(verbose_name='State', max_length=25, blank=True, null=True)

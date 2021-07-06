@@ -1,0 +1,61 @@
+{% extends "layouts/base-site.html" %}
+{% load widget_tweaks %}
+
+{% block title %} Review Detail {% endblock %} 
+{% block breadcrumb %} 
+<li class="breadcrumb-item"><a href={% url 'review_list' %}>Review List</a></li>
+<li class="breadcrumb-item">Review Detail</li>
+{% endblock %} 
+
+{% block content %}
+  
+<div class="container-fluid">
+  <div class="fade-in">
+    <div class="card">
+      <div class="card-header"><strong>Review Detail</strong></div>
+      <div class="card-body">  
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label" style="text-align: right;">Author</label>
+          <div class="col-md-4">
+            <input class="form-control" value="{{object.author}}" readonly>
+          </div>
+          <label class="col-md-2 col-form-label" style="text-align: right;">Stars</label>
+          <div class="col-md-4">
+            <input class="form-control" value="{{object.stars}}" readonly>
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label" style="text-align: right;">Review Date</label>
+          <div class="col-md-4">
+            <input class="form-control" value="{{object.review_date}}" readonly>
+          </div>
+          <label class="col-md-2 col-form-label" style="text-align: right;">Variants</label>
+          <div class="col-md-4">
+            <input class="form-control" value="{{object.variants}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label" style="text-align: right;">Review Content</label>
+          <div class="col-md-10">
+            <textarea class="form-control" rows="5" readonly>{{object.content}}</textarea>
+          </div>
+          
+        </div>
+
+
+
+      </div>
+      <div class="card-footer" style="text-align: center;">
+        
+        <a href="#" onclick="history.back()" class="btn btn-sm btn-primary" role="button">Back</a>
+      </div>
+    </div>    
+  </div>
+</div>
+
+
+
+
+{% endblock content %}

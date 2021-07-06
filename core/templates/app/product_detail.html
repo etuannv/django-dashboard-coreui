@@ -1,0 +1,56 @@
+{% extends "layouts/base-site.html" %}
+{% load widget_tweaks %}
+
+{% block title %} Product Detail {% endblock %} 
+{% block breadcrumb %} 
+<li class="breadcrumb-item"><a href={% url 'product_list' %}>Product List</a></li>
+<li class="breadcrumb-item">Product Detail</li>
+{% endblock %} 
+
+{% block content %}
+  
+<div class="container-fluid">
+  <div class="fade-in">
+    <div class="card">
+      <div class="card-header"><strong>Detail</strong> <small>{{object.name}}</small></div>
+      <div class="card-body">  
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label" style="text-align: right;">Code</label>
+          <div class="col-md-4">
+            <input class="form-control" value="{{object.code}}" readonly>
+          </div>
+          <label class="col-md-2 col-form-label" style="text-align: right;">Price</label>
+          <div class="col-md-4">
+            <input class="form-control" value="{{object.price}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label" style="text-align: right;">Name</label>
+          <div class="col-md-10">
+            <textarea class="form-control" readonly>{{object.name}}</textarea>
+          </div>
+          
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label" style="text-align: right;">Url</label>
+          <div class="col-md-10">
+            <input class="form-control" value="{{object.url}}" readonly>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="card-footer" style="text-align: center;">
+        
+        <a href="#" onclick="history.back()" class="btn btn-sm btn-primary" role="button">Back</a>
+      </div>
+    </div>    
+  </div>
+</div>
+
+
+
+
+{% endblock content %}

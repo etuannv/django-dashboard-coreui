@@ -6,21 +6,21 @@
 
     <div class="container-fluid">
       <div class="fade-in">
-        <h3>Papowerswitch<em style="font-size: 13px;"> Pennsylvania Public Utility Commission</em></h3>
+        <h3>Etsy Review<em style="font-size: 13px;"> Analyse data</em></h3>
         <div class="row">
           <div class="col-sm-6 col-lg-3">
             <div class="card text-white bg-primary">
               <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
                 <div>
-                  <div class="text-value-lg">{{pa_total_records}}</div>
-                  <div>Number of records</div>
+                  <div class="text-value-lg">{{keyword_no}}</div>
+                  <div>Keywords</div>
                 </div>
                 <div class="btn-group">
-                    <a style="color: white;" href="{% url 'pa_list' %}"> View Detail </a>
+                    <a style="color: white;" href="{% url 'keyword_list' %}"> View Detail </a>
                 </div>
               </div>
               <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart1" height="70"></canvas>
+                <!-- <canvas class="chart" id="card-chart1" height="70"></canvas> -->
               </div>
             </div>
           </div>
@@ -29,11 +29,11 @@
             <div class="card text-white bg-info">
               <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
                 <div>
-                  <div class="text-value-lg">{{pa_state_no|default:''}}</div>
-                  <div>Number of States</div>
+                  <div class="text-value-lg">{{shop_no|default:''}}</div>
+                  <div>Shops</div>
                 </div>
                 <div class="btn-group">
-                  <a style="color: white;" href="#"> View Detail </a>
+                  <a style="color: white;" href="{% url 'shop_list' %}"> View Detail </a>
                 </div>
               </div>
               <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
@@ -46,8 +46,11 @@
             <div class="card text-white bg-warning">
               <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
                 <div>
-                  <div class="text-value-lg">{{pa_company_no|default:''}}</div>
-                  <div>Number of Companies</div>
+                  <div class="text-value-lg">{{product_no|default:''}}</div>
+                  <div>Products</div>
+                </div>
+                <div class="btn-group">
+                  <a style="color: white;" href="{% url 'product_list' %}"> View Detail </a>
                 </div>
                 
               </div>
@@ -61,10 +64,12 @@
             <div class="card text-white bg-danger">
               <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
                 <div>
-                  <div class="text-value-lg">{{pa_last_scraped|date:"M d,Y H:i"}}</div>
-                  <div>Last crawl time</div>
+                  <div class="text-value-lg">{{review_no|default:''}}</div>
+                  <div>Reviews</div>
                 </div>
-                
+                <div class="btn-group">
+                  <a style="color: white;" href="{% url 'review_list' %}"> View Detail </a>
+                </div>
               </div>
               <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
                 <canvas class="chart" id="card-chart4" height="70"></canvas>
@@ -77,236 +82,6 @@
       <br/>
 
 
-
-        <!-- OHIO Dasdboard-->
-        <h3>EnergyChoiceOhio (Apples2Apples)</h3>
-        <div class="row">
-          
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-primary">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_total_records}}</div>
-                  <div>Number of records</div>
-                </div>
-                <div class="btn-group">
-                    <a style="color: white;" href="{% url 'ohio_list' %}"> View Detail </a>
-                </div>
-              </div>
-              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart1" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-info">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_state_no|default:''}}</div>
-                  <div>Number of States</div>
-                </div>
-                <div class="btn-group">
-                  <a style="color: white;" href="#"> View Detail </a>
-                </div>
-              </div>
-              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart2" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-warning">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_company_no|default:''}}</div>
-                  <div>Number of Companies</div>
-                </div>
-                
-              </div>
-              <div class="c-chart-wrapper mt-3" style="height:70px;">
-                <canvas class="chart" id="card-chart3" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-danger">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_last_scraped|date:"M d,Y H:i"}}</div>
-                  <div>Last crawl time</div>
-                </div>
-                
-              </div>
-              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart4" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-        </div>
-        <!-- /OHIO Dasdboard-->
-
-
-
-        <br/>
-      <br/>
-
-
-      
-        <!-- OHIO Gas Dasdboard-->
-        <h3>EnergyChoiceOhio Gas (Apples2Apples)</h3>
-        <div class="row">
-          
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-primary">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_gas_total_records}}</div>
-                  <div>Number of records</div>
-                </div>
-                <div class="btn-group">
-                    <a style="color: white;" href="{% url 'ohio_gas_list' %}"> View Detail </a>
-                </div>
-              </div>
-              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart1" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-info">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_gas_state_no|default:''}}</div>
-                  <div>Number of States</div>
-                </div>
-                <div class="btn-group">
-                  <a style="color: white;" href="#"> View Detail </a>
-                </div>
-              </div>
-              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart2" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-warning">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_gas_company_no|default:''}}</div>
-                  <div>Number of Companies</div>
-                </div>
-                
-              </div>
-              <div class="c-chart-wrapper mt-3" style="height:70px;">
-                <canvas class="chart" id="card-chart3" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-danger">
-              <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-value-lg">{{ohio_gas_last_scraped|date:"M d,Y H:i"}}</div>
-                  <div>Last crawl time</div>
-                </div>
-                
-              </div>
-              <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                <canvas class="chart" id="card-chart4" height="70"></canvas>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-->
-        </div>
-        <!-- /OHIO Gas Dasdboard-->
-
-
-
-
-
-        <br/>
-        <br/>
-  
-  
-        
-          <!-- PowerToChoose Dasdboard-->
-          <h3>PowerToChoose (TX)</h3>
-          <div class="row">
-            
-            <div class="col-sm-6 col-lg-3">
-              <div class="card text-white bg-primary">
-                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                  <div>
-                    <div class="text-value-lg">{{p2choose_total_records}}</div>
-                    <div>Number of records</div>
-                  </div>
-                  <div class="btn-group">
-                      <a style="color: white;" href="{% url 'p2choose_list' %}"> View Detail </a>
-                  </div>
-                </div>
-                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                  <canvas class="chart" id="card-chart1" height="70"></canvas>
-                </div>
-              </div>
-            </div>
-            <!-- /.col-->
-            <div class="col-sm-6 col-lg-3">
-              <div class="card text-white bg-info">
-                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                  <div>
-                    <div class="text-value-lg">{{p2choose_state_no|default:''}}</div>
-                    <div>Number of States</div>
-                  </div>
-                  <div class="btn-group">
-                    <a style="color: white;" href="#"> View Detail </a>
-                  </div>
-                </div>
-                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                  <canvas class="chart" id="card-chart2" height="70"></canvas>
-                </div>
-              </div>
-            </div>
-            <!-- /.col-->
-            <div class="col-sm-6 col-lg-3">
-              <div class="card text-white bg-warning">
-                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                  <div>
-                    <div class="text-value-lg">{{p2choose_company_no|default:''}}</div>
-                    <div>Number of Companies</div>
-                  </div>
-                  
-                </div>
-                <div class="c-chart-wrapper mt-3" style="height:70px;">
-                  <canvas class="chart" id="card-chart3" height="70"></canvas>
-                </div>
-              </div>
-            </div>
-            <!-- /.col-->
-            <div class="col-sm-6 col-lg-3">
-              <div class="card text-white bg-danger">
-                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                  <div>
-                    <div class="text-value-lg">{{p2choose_last_scraped|date:"M d,Y H:i"}}</div>
-                    <div>Last crawl time</div>
-                  </div>
-                  
-                </div>
-                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                  <canvas class="chart" id="card-chart4" height="70"></canvas>
-                </div>
-              </div>
-            </div>
-            <!-- /.col-->
-          </div>
-          <!-- /PowerToChoose Dasdboard-->
-       
       </div>
     </div>
 

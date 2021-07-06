@@ -2,6 +2,187 @@ import django_tables2 as tables
 from .models import *
 from django_tables2.utils import A
 
+
+
+class ShopTable(tables.Table):   
+    name  = tables.LinkColumn(
+        'shop_detail', 
+        text=lambda record: record.name, 
+        args=[A('pk')],
+        footer=lambda table: 'Total: {} records'.format(len(table.data))
+        )
+
+    
+    class Meta:
+        attrs = {
+            'class':'table table-responsive-sm table-bordered table-striped table-sm'
+        }
+        model = Shop
+        fields = (
+            'name',
+            'product_no', 
+            'sale_no',
+            'review_no', 
+            'stars', 
+            'author',
+            'url'
+        )
+
+
+class ProductTable(tables.Table):   
+    code  = tables.LinkColumn(
+        'product_detail', 
+        text=lambda record: record.code, 
+        args=[A('pk')],
+        footer=lambda table: 'Total: {} records'.format(len(table.data))
+        )
+    
+    shop = tables.LinkColumn(
+        'shop_detail', 
+        text=lambda record: record.shop.name, 
+        args=[A('shop_id')],
+        )
+    
+
+    url = tables.TemplateColumn(
+        '<a target="_blank" href="{{record.url}}">Visit</a>',
+        verbose_name='Esty URL'
+    )
+
+    first_review = tables.Column(
+        accessor='id', 
+        verbose_name='First Review Date', 
+        attrs={
+            'td': {
+                'style': 'text-align:center;'
+            }
+        }
+    )
+    def render_first_review(self, value, record):
+        first_review = Review.objects.filter(product__id__iexact=value).order_by('review_date')
+        if first_review:
+            if first_review[0].review_date:
+                return first_review[0].review_date.strftime("%m/%d/%Y")
+        return ''
+
+
+    
+    reviews = tables.Column(
+        accessor='id', 
+        verbose_name='Reviews', 
+        attrs={
+            'td': {
+                'style': 'text-align:center;'
+            }
+        }
+    )
+    
+    def render_reviews(self, value, record):
+        review_count = Review.objects.filter(product__id__iexact=value).count()
+        # return f'<a href="/review/list?content=&product__id={value}">{review_count}</a>',
+        return review_count
+    
+    price = tables.Column(
+        accessor="price",
+        verbose_name='Price', 
+        attrs={
+            'td': {
+                'style': 'text-align:right;'
+            }
+        }
+    )
+    
+    class Meta:
+        attrs = {
+            'class':'table table-responsive-sm table-bordered table-striped table-sm'
+        }
+        model = Product
+        fields = (
+            'code',
+            'name', 
+            'price',
+            'first_review',
+            'reviews',
+            'shop',
+            'url',
+        )
+
+
+class ReviewTable(tables.Table):   
+    content  = tables.LinkColumn(
+        'review_detail', 
+        text=lambda record: record.content, 
+        args=[A('pk')],
+        footer=lambda table: 'Total: {} records'.format(len(table.data))
+        )
+
+    
+
+    class Meta:
+        attrs = {
+            'class':'table table-responsive-sm table-bordered table-striped table-sm'
+        }
+        model = Review
+        fields = (
+            'author',
+            'stars',
+            'review_date',
+            'variants',
+        )
+
+
+
+class KeywordTable(tables.Table):
+    name  = tables.LinkColumn(
+        'keyword_detail', 
+        text=lambda record: record.name, 
+        args=[A('pk')],
+        footer=lambda table: 'Total: {} records'.format(len(table.data))
+        )
+    product  = tables.LinkColumn(
+        'product_detail', 
+        text=lambda record: record.product.name, 
+        args=[A('product_id')],
+        )
+
+    class Meta:
+        attrs = {
+            'class':'table table-responsive-sm table-bordered table-striped table-sm'
+        }
+        model = Keyword
+        fields = (
+            'name',
+            'rank',
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class PersonColumn(tables.Column):
 
     def render(self, record):

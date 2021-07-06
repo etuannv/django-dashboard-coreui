@@ -1,0 +1,60 @@
+{% extends "layouts/base-site.html" %}
+{% load render_table from django_tables2 %}
+{% load export_url from django_tables2 %}
+{% load widget_tweaks %}
+
+{% block title %} Product Data List {% endblock %} 
+{% block breadcrumb %} 
+<li class="breadcrumb-item">Product List</li>
+{% endblock %} 
+
+{% block content %}
+  
+<div class="container-fluid">
+  <div class="fade-in">
+    <div class="card">
+      <form class="form-horizontal" action="{% url 'product_list'%}" method="get">
+      <div class="card-body">  
+          <div class="form-group row">
+            <div class="col-3">
+              {{ filter.form.name.label_tag }}
+              {% render_field filter.form.name class="form-control" %}
+            </div>
+            <div class="col-3">
+              {{ filter.form.code.label_tag }}
+              {% render_field filter.form.code class="form-control" %}
+            </div>
+          </div>
+
+      </div>
+      <div class="card-footer" style="text-align: center;">
+        <button class="btn btn-sm btn-primary" type="submit"> Search</button>
+        <a href="{% url 'product_list'%}" class="btn btn-sm btn-primary" role="button">Reset</a>
+        <a href="{% export_url 'csv' %}" class="btn btn-sm btn-primary" role="button">Export the data</a>  
+      </div>
+    </form>
+    </div>    
+  </div>
+</div>
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <style>
+      .table-container {
+          width: 99.9%;
+      }
+    </style>
+    {% render_table data_table %}
+  </div>
+  <div class="row" style="padding-top:40px;">
+    <p class="text-center">
+        
+          
+    </p>
+  </div>
+</div>
+
+
+{% endblock content %}

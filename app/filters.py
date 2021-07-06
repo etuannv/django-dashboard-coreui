@@ -1,6 +1,110 @@
 from .models import *
 import django_filters
 
+
+class ShopFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model = Shop
+        fields = {
+            # 'code': ['icontains'],
+            # 'bu_name': ['icontains'],
+            # 'bc_effect_date' : ['year__gt', 'year__lt', ],
+        }
+    
+
+    name = django_filters.CharFilter(
+        label='Shop', 
+        lookup_expr='icontains'
+        )
+    
+
+class ProductFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model = Product
+        fields = {
+            # 'code': ['icontains'],
+            # 'bu_name': ['icontains'],
+            # 'bc_effect_date' : ['year__gt', 'year__lt', ],
+        }
+    
+
+    name = django_filters.CharFilter(
+        label='Name', 
+        lookup_expr='icontains'
+        )
+    code = django_filters.CharFilter(
+        label='Code', 
+        lookup_expr='icontains'
+        )
+
+
+
+
+class ReviewFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model = Review
+        fields = {
+            # 'code': ['icontains'],
+            # 'bu_name': ['icontains'],
+            # 'bc_effect_date' : ['year__gt', 'year__lt', ],
+        }
+    
+
+    content = django_filters.CharFilter(
+        label='Review', 
+        lookup_expr='icontains'
+        )
+    
+    product__id = django_filters.CharFilter(
+        label='Product', 
+        lookup_expr='iexact'
+        )
+    
+
+
+
+class KeywordFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model = Keyword
+        fields = {
+            # 'code': ['icontains'],
+            # 'bu_name': ['icontains'],
+            # 'bc_effect_date' : ['year__gt', 'year__lt', ],
+        }
+    
+
+    name = django_filters.CharFilter(
+        label='Keyword', 
+        lookup_expr='icontains'
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class PADataFilter(django_filters.FilterSet):
 
     class Meta:

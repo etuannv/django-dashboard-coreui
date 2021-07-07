@@ -24,6 +24,16 @@ class ShopTable(tables.Table):
     sale_no = NumberColumn()
     review_no = NumberColumn()
     stars = NumberColumn()
+
+    url = tables.TemplateColumn(
+        '<a target="_blank" href="{{record.url}}">Visit</a>',
+        verbose_name='Esty URL',
+        attrs={
+        'td': {
+            'style': 'text-align:center;'
+        }
+    }
+    )
     
     class Meta:
         attrs = {

@@ -144,6 +144,15 @@ class Keyword(models.Model):
     
     def __str__(self):
         return self.name + self.rank
+
+    
+    # Fix bug Product matching query does not exist.
+    from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
+    def get_object(self, instance):
+        qs = self.get_queryset(instance=instance)
+        # Assuming the database enforces foreign keys, this won't fail.
+        return qs.filter(self.field.get_reverse_related_filter(instance)).first()
+    ForwardManyToOneDescriptor.get_object = get_object
     
     class Meta:
         ordering = ['-update_at', 'rank']

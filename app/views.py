@@ -257,8 +257,28 @@ class KeywordDetailView(LoginRequiredMixin, DetailView):
 
 
 
+from .forms import *
+from django.views.generic.edit import FormView
+from scrapyd_api import ScrapydAPI
 
+class KeywordFormView(FormView):
+    template_name = 'app/keyword_form.html'
+    form_class = KeywordForm
+    success_url = '/keyword/list'
 
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+
+        # 1. Remove previous keyword if exist
+        keyword = form.cleaned_data['keyword']
+        Keyword.objects.filter(name__exact=keyword).delete()
+
+        # 2. Schedule to keyword_spd
+        scrapyd = ScrapydAPI('http://localhost:6800')
+        jobid = scrapyd.schedule('datascraper', 'keyword_spd', keyword=keyword)
+
+        return super().form_valid(form)
 
 
 

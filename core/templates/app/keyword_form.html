@@ -1,0 +1,45 @@
+
+{% extends "layouts/base-site.html" %}
+{% load widget_tweaks %}
+
+{% block title %} Add or Update keyword {% endblock %} 
+{% block breadcrumb %} 
+<li class="breadcrumb-item"><a href={% url 'keyword_list' %}>Keyword List</a></li>
+<li class="breadcrumb-item">Add or Update keyword</li>
+{% endblock %} 
+
+{% block content %}
+  
+
+
+<div class="container-fluid">
+  <div class="fade-in">
+    <div class="card">
+    <form method="post">{% csrf_token %}
+      <div class="card-header"><strong>Add or Update keyword</strong></div>
+      <div class="card-body">  
+        <div class="form-group row">
+          <label class="col-md-4 col-form-label" style="text-align: right;">Keyword</label>
+          <div class="col-md-5">
+            {% render_field form.keyword class="form-control" %}
+          </div>
+          
+        </div>
+
+
+      </div>
+      <div class="card-footer" style="text-align: center;">
+        <a href="#" onclick="history.back()" class="btn btn-sm btn-dark" role="button">Back</a>
+        <input class="btn btn-sm btn-primary" type="submit" value="Save">
+        <input class="btn btn-sm btn-primary" type="reset" value="Cancel">
+      </div>
+
+    </form>
+    </div>    
+  </div>
+</div>
+
+
+
+
+{% endblock content %}

@@ -24,6 +24,7 @@ urlpatterns = [
     path('review/list', views.ReviewListView.as_view(), name='review_list'),
     path('review/detail/<uuid:id>', views.ReviewDetailView.as_view(), name='review_detail'),
 
+    path('keyword/add', views.KeywordFormView.as_view(), name='keyword_add'),
     path('keyword/list', views.KeywordListView.as_view(), name='keyword_list'),
     path('keyword/detail/<uuid:id>', views.KeywordDetailView.as_view(), name='keyword_detail'),
 

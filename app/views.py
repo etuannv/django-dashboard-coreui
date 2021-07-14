@@ -263,14 +263,14 @@ class KeywordFormView(FormView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
 
-        # # 1. Remove previous keyword if exist
-        # keyword = form.cleaned_data['keyword']
-        # Keyword.objects.filter(name__exact=keyword).delete()
+        # 1. Remove previous keyword if exist
+        keyword = form.cleaned_data['keyword']
+        Keyword.objects.filter(name__exact=keyword).delete()
 
-        # # 2. Schedule to keyword_spd
-        # scrapyd = ScrapydAPI('http://localhost:6800')
-        # jobid = scrapyd.schedule('datascraper', 'keyword_spd', keyword=keyword)
-        
+        # 2. Schedule to keyword_spd
+        scrapyd = ScrapydAPI('http://localhost:6800')
+        jobid = scrapyd.schedule('datascraper', 'keyword_spd', keyword=keyword)
+        print(f'Start job {jobid}')
 
         return super().form_valid(form)
 

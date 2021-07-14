@@ -127,7 +127,7 @@ class Product(models.Model):
         # previews = Review.objects.filter(product__id__iexact=self.id, review_date__isnull=False).order_by('review_date')
         result_data = {}
         product_reviews = Review.objects.filter(product__id__iexact=self.id, review_date__isnull=False)
-        avg_review_by_month = product_reviews.annotate(month=TruncMonth('review_date')).values('month').annotate(c=Count('id')).values('month', 'c')
+        avg_review_by_month = product_reviews.annotate(month=TruncMonth('review_date')).values('month').annotate(c=Count('id')).values('month', 'c').order_by('month')
         
         for item in list(avg_review_by_month):
             if item['month']:

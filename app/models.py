@@ -90,6 +90,8 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
     
+
+    @property
     def get_review_percent(self):
         if self.review_no and self.sale_no:
             # return round((float(self.review_no)/float(self.sale_no))*100,2)

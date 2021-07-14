@@ -1,6 +1,7 @@
 import django_tables2 as tables
 from .models import *
 from django_tables2.utils import A
+from django.db.models import F
 
 class NumberColumn(tables.Column):
     decimal_no = 4
@@ -28,12 +29,20 @@ class ShopTable(tables.Table):
     review_percent = tables.Column(
         accessor='get_review_percent',
         verbose_name='Review Percent',
+        
         attrs={
             'td': {
                 'style': 'text-align:right;'
             }
         }
     )
+
+    
+    def order_review_percent(self, queryset, is_descending):
+        queryset = queryset.annotate(
+            review_percent=(F("review_no") / F("sale_no") * 100)
+        ).order_by(("-" if is_descending else "") + "review_percent")
+        return (queryset, True)
 
     url = tables.TemplateColumn(
         '<a target="_blank" href="{{record.url}}">Visit</a>',
@@ -79,21 +88,25 @@ class ProductTable(tables.Table):
 
     url = tables.TemplateColumn(
         '<a target="_blank" href="{{record.url}}">Visit</a>',
-        verbose_name='Esty URL'
+        verbose_name='Esty URL',
+        orderable=False,
     )
 
     first_review = tables.Column(
         accessor='get_first_review_date', 
         verbose_name='First Review Date', 
+        orderable=False,
         attrs={
             'td': {
                 'style': 'text-align:center;'
             }
         }
+
     )
 
     reviews = tables.TemplateColumn(
         '<a href="/review/list?content=&product__id={{record.id}}">{{record.get_review_no}}</a>',
+        orderable=False,
         attrs={
             'td': {
                 'style': 'text-align:right;'
@@ -186,6 +199,7 @@ class KeywordTable(tables.Table):
     first_review = tables.Column(
         accessor='product.get_first_review_date',
         verbose_name='First Review Date', 
+        orderable=False,
         attrs={
             'td': {
                 'style': 'text-align:center;'
@@ -195,6 +209,7 @@ class KeywordTable(tables.Table):
 
     reviews = tables.TemplateColumn(
         '<a href="/review/list?content=&product__id={{record.product.id}}">{{record.product.get_review_no}}</a>',
+        orderable=False,
         attrs={
             'td': {
                 'style': 'text-align:right;'

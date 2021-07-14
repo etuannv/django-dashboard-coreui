@@ -14,6 +14,7 @@
     <div class="card">
       <div class="card-header"><strong>Detail</strong> <small>{{object.name}}</small></div>
       <div class="card-body">  
+        
         <div class="form-group row">
           <label class="col-md-2 col-form-label" style="text-align: right;">Code</label>
           <div class="col-md-4">
@@ -28,11 +29,11 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label" style="text-align: right;">Review No</label>
           <div class="col-md-4">
-            <input class="form-control" value="{{review_no}}" readonly>
+            <input class="form-control" value="{{object.get_review_no}}" readonly>
           </div>
           <label class="col-md-2 col-form-label" style="text-align: right;">First Revew Date</label>
           <div class="col-md-4">
-            <input class="form-control" value="{{first_review_date}}" readonly>
+            <input class="form-control" value="{{object.get_first_review_date}}" readonly>
           </div>
         </div>
 
@@ -49,7 +50,12 @@
             <input class="form-control" value="{{object.url}}" readonly>
           </div>
         </div>
-
+        
+        <div class="form-group row">
+          
+          <canvas id="myChart"  style="margin: 50px;"></canvas>
+          
+        </div>
 
       </div>
       <div class="card-footer" style="text-align: center;">
@@ -60,7 +66,69 @@
   </div>
 </div>
 
-
-
-
 {% endblock content %}
+
+
+  
+  {% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"></script>
+    <script>
+      const data = {
+        datasets: [{
+          label: 'Reviews by month',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: {{object.review_by_month|safe}},
+          tension: 0.1
+        }]
+      };
+      const config = {
+        type: 'line',
+        data,
+        zoomEnabled: true, 
+        options: {
+          scales: {
+            y: {
+                //max: 100,
+                // min: 0,
+                beginAtZero: true,
+                //ticks: {
+                //    stepSize: 1
+                //}
+             }
+          },
+          plugins: {
+            zoom: {
+              pan: {
+                enabled: true,
+                mode: 'x',
+                speed: 5,
+                threshold: 1
+              },
+              limits: {
+                y: {min: 0, max:'original'},
+              },
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+                pinch: {
+                  enabled: true
+                },
+                mode: 'x',
+              }
+            }
+          }
+        }
+      };
+    
+      var myChart = new Chart(
+        document.getElementById('myChart'),
+        config,
+      );
+    </script>
+     
+  {% endblock javascripts %}
+    

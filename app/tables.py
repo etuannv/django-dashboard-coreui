@@ -3,6 +3,7 @@ from .models import *
 from django_tables2.utils import A
 
 class NumberColumn(tables.Column):
+    decimal_no = 4
     attrs={
         'td': {
             'style': 'text-align:right;'
@@ -21,9 +22,18 @@ class ShopTable(tables.Table):
         args=[A('pk')],
         footer=lambda table: 'Total: {} records'.format(len(table.data))
         )
-    sale_no = NumberColumn()
-    review_no = NumberColumn()
-    stars = NumberColumn()
+    sale_no = NumberColumn(verbose_name='Sale No')
+    review_no = NumberColumn(verbose_name='Review No')
+    stars = NumberColumn(verbose_name='Review Stars')
+    review_percent = tables.Column(
+        accessor='get_review_percent',
+        verbose_name='Review Percent',
+        attrs={
+            'td': {
+                'style': 'text-align:right;'
+            }
+        }
+    )
 
     url = tables.TemplateColumn(
         '<a target="_blank" href="{{record.url}}">Visit</a>',
@@ -44,7 +54,8 @@ class ShopTable(tables.Table):
             'name',
             # 'product_no', 
             'sale_no',
-            'review_no', 
+            'review_no',
+            'review_percent',
             'stars', 
             'author',
             'url'
@@ -156,21 +167,56 @@ class KeywordTable(tables.Table):
         footer=lambda table: 'Total: {} records'.format(len(table.data))
         )
     
+    rank = tables.Column(
+        accessor='rank',
+        verbose_name='Rank', 
+        attrs={
+            'td': {
+                'style': 'text-align:center;min-width:60px;'
+            }
+        }
+    )
+    
     product  = tables.LinkColumn(
         'product_detail', 
-        text=lambda record: record.product.name, 
+        text=lambda record: record.product.name if record.product.name else 'is scraping or unavailable', 
         args=[A('product_id')],
         )
+    
+    first_review = tables.Column(
+        accessor='product.get_first_review_date',
+        verbose_name='First Review Date', 
+        attrs={
+            'td': {
+                'style': 'text-align:center;'
+            }
+        }
+    )
 
-    # product = tables.Column(
-    #     accessor='product.name', 
-    #     verbose_name='Reviews', 
+    reviews = tables.TemplateColumn(
+        '<a href="/review/list?content=&product__id={{record.product.id}}">{{record.product.get_review_no}}</a>',
+        attrs={
+            'td': {
+                'style': 'text-align:right;'
+            }
+        }
+    )
+    
+
+    # price = tables.Column(
+    #     accessor="price",
+    #     verbose_name='Price', 
     #     attrs={
     #         'td': {
-    #             'style': 'text-align:left;'
+    #             'style': 'text-align:right;'
     #         }
     #     }
     # )
+    
+    url = tables.TemplateColumn(
+        '<a target="_blank" href="{{record.product.url}}">Visit</a>',
+        verbose_name='Esty URL'
+    )
 
     class Meta:
         attrs = {

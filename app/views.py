@@ -152,14 +152,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
-        context['review_no'] = Review.objects.filter(product__id__exact=self.object.id).count()
-
-        first_review_date = ''
-        first_review = Review.objects.filter(product__id__iexact=self.object.id).order_by('review_date')
-        if first_review:
-            if first_review[0].review_date:
-                first_review_date = first_review[0].review_date.strftime("%m/%d/%Y")
-        context['first_review_date'] = first_review_date
+        
         return context
 
 
@@ -270,13 +263,14 @@ class KeywordFormView(FormView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
 
-        # 1. Remove previous keyword if exist
-        keyword = form.cleaned_data['keyword']
-        Keyword.objects.filter(name__exact=keyword).delete()
+        # # 1. Remove previous keyword if exist
+        # keyword = form.cleaned_data['keyword']
+        # Keyword.objects.filter(name__exact=keyword).delete()
 
-        # 2. Schedule to keyword_spd
-        scrapyd = ScrapydAPI('http://localhost:6800')
-        jobid = scrapyd.schedule('datascraper', 'keyword_spd', keyword=keyword)
+        # # 2. Schedule to keyword_spd
+        # scrapyd = ScrapydAPI('http://localhost:6800')
+        # jobid = scrapyd.schedule('datascraper', 'keyword_spd', keyword=keyword)
+        
 
         return super().form_valid(form)
 

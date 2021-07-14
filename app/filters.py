@@ -75,6 +75,7 @@ class KeywordFilter(django_filters.FilterSet):
             # 'bu_name': ['icontains'],
             # 'bc_effect_date' : ['year__gt', 'year__lt', ],
         }
+        
     
 
     name = django_filters.CharFilter(

@@ -4,9 +4,13 @@ License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from datetime import date
 from django.db import models
 import uuid
 from django.utils import timezone
+
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
 # Create your models here.
 
 
@@ -86,6 +90,12 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
     
+    def get_review_percent(self):
+        if self.review_no and self.sale_no:
+            # return round((float(self.review_no)/float(self.sale_no))*100,2)
+            return '{:0.2f} %'.format((float(self.review_no) / self.sale_no * 100))
+        return 0
+    
     class Meta:
         ordering = ['name', 'sale_no']
 
@@ -106,11 +116,27 @@ class Product(models.Model):
         return Review.objects.filter(product__id__iexact=self.id).count()
     
     def get_first_review_date(self):
-        first_review = Review.objects.filter(product__id__iexact=self.id).order_by('review_date')
+        first_review = Review.objects.filter(product__id__iexact=self.id, review_date__isnull=False).order_by('review_date')
         if first_review:
             if first_review[0].review_date:
                 return first_review[0].review_date.strftime("%m/%d/%Y")
         return ''
+    
+
+    def review_by_month(self):
+        # previews = Review.objects.filter(product__id__iexact=self.id, review_date__isnull=False).order_by('review_date')
+        result_data = {}
+        product_reviews = Review.objects.filter(product__id__iexact=self.id, review_date__isnull=False)
+        avg_review_by_month = product_reviews.annotate(month=TruncMonth('review_date')).values('month').annotate(c=Count('id')).values('month', 'c')
+        
+        for item in list(avg_review_by_month):
+            if item['month']:
+                if item['month'].strftime("%b-%Y") in result_data:
+                    result_data[item['month'].strftime("%b-%Y")] += item['c']
+                else:
+                    result_data[item['month'].strftime("%b-%Y")] = item['c']
+        
+        return result_data
 
 
 class Review(models.Model):
@@ -155,4 +181,4 @@ class Keyword(models.Model):
     ForwardManyToOneDescriptor.get_object = get_object
     
     class Meta:
-        ordering = ['-update_at', 'rank']
+        ordering = ['-update_at', 'name', '-rank']
